@@ -26,7 +26,10 @@ def healthz():
 def create_order(o: OrderCreate):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("INSERT INTO orders (customer_id, product_id, quantity) VALUES (%s, %s, %s) RETURNING id;", (o.customer_id, o.product_id, o.quantity))
+    cur.execute(
+        "INSERT INTO orders (customer_id, product_id, quantity, status) VALUES (%s, %s, %s, 'CREATED') RETURNING id;",
+        (o.customer_id, o.product_id, o.quantity)
+    )
     new_id = cur.fetchone()[0]
     conn.commit()
     cur.close()
@@ -41,4 +44,13 @@ def list_orders():
     rows = cur.fetchall()
     cur.close()
     conn.close()
-    return [{"id": r[0], "customer_id": r[1], "product_id": r[2], "quantity": r[3], "status": r[4]} for r in rows]
+    return [
+        {
+            "id": r[0],
+            "customer_id": r[1],
+            "product_id": r[2],
+            "quantity": r[3],
+            "status": r[4] if r[4] else "CREATED"
+        }
+        for r in rows
+    ]
