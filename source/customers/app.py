@@ -21,6 +21,7 @@ class CustomerCreate(BaseModel):
     identity_number: str
 
 @app.get("/healthz")
+@app.get("/api/customers/healthz")
 def healthz():
     return {"status": "ok"}
 

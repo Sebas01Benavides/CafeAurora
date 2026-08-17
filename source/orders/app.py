@@ -1,7 +1,6 @@
 import os, psycopg2
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List
 
 app = FastAPI()
 
@@ -13,31 +12,33 @@ def get_db():
         password=os.getenv("DB_PASS", "AuroraPass123")
     )
 
-class OrderItem(BaseModel):
-    id_catalog: int
+class OrderCreate(BaseModel):
+    customer_id: int
+    product_id: int
     quantity: int
 
-class OrderCreate(BaseModel):
-    items: List[OrderItem]
-
 @app.get("/healthz")
+@app.get("/api/orders/healthz")
 def healthz():
     return {"status": "ok"}
 
 @app.post("/api/orders")
-def create_order(order: OrderCreate):
+def create_order(o: OrderCreate):
     conn = get_db()
     cur = conn.cursor()
-    total = 0.0
-    for item in order.items:
-        cur.execute("SELECT price FROM products WHERE id = %s;", (item.id_catalog,))
-        res = cur.fetchone()
-        price = float(res[0]) if res else 1000.0
-        total += price * item.quantity
-    
-    cur.execute("INSERT INTO orders (total) VALUES (%s) RETURNING id;", (total,))
-    order_id = cur.fetchone()[0]
+    cur.execute("INSERT INTO orders (customer_id, product_id, quantity) VALUES (%s, %s, %s) RETURNING id;", (o.customer_id, o.product_id, o.quantity))
+    new_id = cur.fetchone()[0]
     conn.commit()
     cur.close()
     conn.close()
-    return {"order_id": order_id, "total": total, "status": "created"}
+    return {"id": new_id, "customer_id": o.customer_id, "product_id": o.product_id, "quantity": o.quantity, "status": "CREATED"}
+
+@app.get("/api/orders")
+def list_orders():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT id, customer_id, product_id, quantity, status FROM orders;")
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return [{"id": r[0], "customer_id": r[1], "product_id": r[2], "quantity": r[3], "status": r[4]} for r in rows]
