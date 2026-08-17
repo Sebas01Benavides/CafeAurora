@@ -1,0 +1,5 @@
+ id |      name       |        email         |                                          identity_encrypted                                          
+----+-----------------+----------------------+------------------------------------------------------------------------------------------------------
+ 18 | Sebas Benavides | sbenavides@aurora.cr | gAAAAABqg4Ac-5ADqsyubvwF8ld6rfinGwUIlNSGF0NYVI_xFccGcBcwFSFG3Qhfi4mUtpSNjK2T7BSoDceGTR6g4sS58u5XhQ==
+(1 row)
+

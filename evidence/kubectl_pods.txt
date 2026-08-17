@@ -1,0 +1,5 @@
+NAME                                   READY   STATUS    RESTARTS   AGE     IP           NODE         NOMINATED NODE   READINESS GATES
+catalog-deployment-6778d9f9d5-f2trx    1/1     Running   0          6m29s   10.42.0.11   cafeserver   <none>           <none>
+customers-deployment-5d4887578-2xw5l   1/1     Running   0          3m30s   10.42.0.13   cafeserver   <none>           <none>
+orders-deployment-5665d547c9-kf9mx     1/1     Running   0          6m29s   10.42.0.12   cafeserver   <none>           <none>
+postgres-5f8fcc84b-c7cwh               1/1     Running   0          6m29s   10.42.0.10   cafeserver   <none>           <none>

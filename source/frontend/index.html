@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Café Aurora S.R.L. - Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.4; }
+        pre { background: #f4f4f4; padding: 10px; border: 1px solid #ddd; }
+        section { margin-bottom: 25px; }
+        button { padding: 8px 12px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Café Aurora S.R.L.</h1>
+    <section>
+        <h2>1. Catálogo de Productos (Microservicio)</h2>
+        <button onclick="loadCatalog()">Cargar Catálogo</button>
+        <div id="catalog"></div>
+    </section>
+    <section>
+        <h2>2. Clientes (Microservicio - Desencriptado en Claro)</h2>
+        <button onclick="loadCustomers()">Cargar Clientes</button>
+        <div id="customers"></div>
+    </section>
+    <section>
+        <h2>3. Inventario Legado (Apache/PHP)</h2>
+        <button onclick="loadLegacy()">Cargar Legado</button>
+        <div id="legacy"></div>
+    </section>
+
+    <script>
+        async function loadCatalog() {
+            let res = await fetch('/api/catalog');
+            let data = await res.json();
+            document.getElementById('catalog').innerHTML = '<pre>' + JSON.stringify(data.slice(0, 5), null, 2) + '\n... (' + data.length + ' productos en total)</pre>';
+        }
+        async function loadCustomers() {
+            let res = await fetch('/api/customers');
+            let data = await res.json();
+            document.getElementById('customers').innerHTML = '<pre>' + JSON.stringify(data.slice(0, 5), null, 2) + '\n... (' + data.length + ' clientes en total)</pre>';
+        }
+        async function loadLegacy() {
+            let res = await fetch('/legacy/inventory');
+            let data = await res.json();
+            document.getElementById('legacy').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        }
+    </script>
+</body>
+</html>

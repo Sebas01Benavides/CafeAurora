@@ -1,0 +1,6 @@
+NAME                TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+catalog-service     NodePort    10.43.154.104   <none>        8000:30001/TCP   6m30s
+customers-service   NodePort    10.43.255.149   <none>        8000:30002/TCP   6m30s
+kubernetes          ClusterIP   10.43.0.1       <none>        443/TCP          11m
+orders-service      NodePort    10.43.244.211   <none>        8000:30003/TCP   6m29s
+postgres-service    ClusterIP   10.43.179.180   <none>        5432/TCP         6m30s
